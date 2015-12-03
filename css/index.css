@@ -1,0 +1,19 @@
+#formContainer {
+    padding: 5%;
+    width: 50%;
+    float: left;
+}
+
+#varList {
+    padding-left:7%;
+}
+
+#methodList {
+    padding-left:7%;
+}
+
+#resultContainer {
+    padding: 5%;
+    width: 50%;
+    float: left;
+}
