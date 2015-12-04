@@ -7,9 +7,17 @@
         <!-- bootstrap -->
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-        <!--<link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet"/>-->
+        <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet"/>
+        <!--highlightjs-->
+        <link href="bower_components/highlightjs/styles/tomorrow-night-blue.css" rel="stylesheet"/>
+        <script src="bower_components/highlightjs/highlight.pack.min.js"></script>
+        <!--<script>hljs.initHighlightingOnLoad();</script>-->
         <!-- angular -->
         <script src="bower_components/angular/angular.min.js"></script>
+        <!--angular-hightlightjs-->
+        <script src="bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
+        <!--animate.css-->
+        <link href="bower_components/animate.css/animate.min.css" rel="stylesheet"/>
         <!-- project -->
         <link href="css/index.css" rel="stylesheet"/>
         <script src="app.js"></script>
@@ -27,58 +35,56 @@
             <!--<p ng-repeat="car in cars">{{ car.year }} {{ car.make }} {{ car.model }}<p>-->
 
             <div id="formContainer">
-                <form>
-                    <div class="form-group">
-                        <label for="className" style="width:50px;">Class:</label>
-                        <input ng-model="className" type="text" style="display:inline; width:25%;" class="form-control" id="className" placeholder="Enter class name">
-                        <select class="form-control" style="display:inline; width:25%">
-                            <option ng-repeat="option in PARENT_OPTIONS" value="{{option}}">{{option}}</option>
-                        </select>
-                        <input type="text" style="display:inline; width:25%;" class="form-control" id="parentClassName" placeholder="Enter parent class name">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="variableName">Variable:</label>
-                        <input ng-model="varName" type="text" style="display:inline; width:25%;" class="form-control" id="variableName" placeholder="Enter variable name">
-                        <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
-                            <label>
-                                <input ng-model="$parent.varAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.varAccessModifier=accessModifier) : ''" name="variableAccessModifiers"> {{accessModifier}}
-                            </label>
-                        </div>
-
-                        <button ng-click="addVariable()" class="btn btn-info">Add</button>
-
-                        <div id="varList">
-                            <button ng-repeat="variable in variables" ng-click="removeVariable(variable)" class="btn btn-default">{{variable.accessModifier}} - {{variable.name}}</button>
-                        </div>
+                <div class="form-group">
+                    <label for="className" style="width:50px;">Class:</label>
+                    <input ng-model="className" type="text" style="display:inline; width:25%;" class="form-control" id="className" placeholder="Enter class name">
+                    <select class="form-control" style="display:inline; width:25%">
+                        <option ng-repeat="option in PARENT_OPTIONS" value="{{option}}">{{option}}</option>
+                    </select>
+                    <input type="text" style="display:inline; width:25%;" class="form-control" id="parentClassName" placeholder="Enter parent class name">
+                </div>
+                <div class="form-group">
+                    <label for="variableName">Variable:</label>
+                    <input type="text" ng-model="varName" ng-keyup="$event.keyCode == 13 && addVariable()" style="display:inline; width:25%;" class="form-control" id="variableName" placeholder="Enter variable name">
+                    <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
+                        <label>
+                            <input ng-model="$parent.varAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.varAccessModifier=accessModifier) : ''" name="variableAccessModifiers"> {{accessModifier}}
+                        </label>
                     </div>
 
-                    <div class="form-group">
-                        <label for="methodName">Method:</label>
-                        <input ng-model="methodName" type="text" style="display:inline; width:25%;" class="form-control" id="methodName" placeholder="Enter method name">
-                        <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
-                            <label>
-                                <input ng-model="$parent.methodAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.methodAccessModifier=accessModifier) : ''" name="methodAccessModifiers"> {{accessModifier}}
-                            </label>
-                        </div>
-                        <button ng-click="addMethod()" class="btn btn-info">Add</button>
+                    <button ng-click="addVariable()" class="btn btn-info">Add</button>
 
-                        <div id="methodList">
-                            <button ng-repeat="method in methods" ng-click="removeMethod(method)" class="btn btn-default">{{method.accessModifier}} - {{method.name}}</button>
-                        </div>
+                    <div id="varList">
+                        <button ng-repeat="variable in variables" ng-click="removeVariable(variable)" class="btn btn-default">{{variable.accessModifier}} - {{variable.name}}</button>
                     </div>
+                </div>
 
-                    <!--<button type="submit" class="btn btn-default">Submit</button>-->
-                    <button ng-click="constructES6Class()" class="btn btn-default">Submit</button>
+                <div class="form-group">
+                    <label for="methodName">Method:</label>
+                    <input type="text" ng-model="methodName" ng-keyup="$event.keyCode == 13 && addMethod()" style="display:inline; width:25%;" class="form-control" id="methodName" placeholder="Enter method name">
+                    <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
+                        <label>
+                            <input ng-model="$parent.methodAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.methodAccessModifier=accessModifier) : ''" name="methodAccessModifiers"> {{accessModifier}}
+                        </label>
+                    </div>
+                    <button ng-click="addMethod()" class="btn btn-info">Add</button>
 
-                </form>
+                    <div id="methodList">
+                        <button ng-repeat="method in methods" ng-click="removeMethod(method)" class="btn btn-default">{{method.accessModifier}} - {{method.name}}</button>
+                    </div>
+                </div>
+
+                <button ng-click="constructES6Class()" class="btn btn-default">Submit</button>
             </div>
 
+            <!--<div id="resultContainer" hljs source="resultText" hljs-language="javascript">-->
             <div id="resultContainer">
-                <textarea></textarea>
-            </div>
+                <!--<pre><code id="resultTextarea"><textarea ng-model="resultText" style="height:75%;width:100%"></textarea></code></pre>-->
+                <!--<pre><code id="resultTextarea" class="json">console.log('hai'); {{varName}}</code></pre>-->
+                <!--<pre><code class="javascript">for (var i = 0; i < 10; i++)<br> console.log("yo");</code></pre>-->
 
-            <div>$scope.variables = {{variables}}</div>
+                <div id="resultTextarea" hljs source="resultText" hljs-language="javascript"></div>
+            </div>
 
         </div>
 

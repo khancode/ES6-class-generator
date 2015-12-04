@@ -1,8 +1,8 @@
 {
-  "name": "memory-refresher",
+  "name": "ES6 Class Generator",
   "version": "1.0.0",
-  "description": "An angular app to jog my memory of it.",
-  "main": "index.htmlnpm in",
+  "description": "An ES6 (ECMAScript 6) class generator.",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

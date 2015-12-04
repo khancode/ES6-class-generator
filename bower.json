@@ -1,7 +1,7 @@
 {
-  "name": "memory-refresher",
-  "description": "An angular app to jog my memory of it.",
-  "main": "index.htmlnpm in",
+  "name": "ES6 Class Generator",
+  "description": "An ES6 (ECMAScript 6) class generator.",
+  "main": "index.html",
   "authors": [
     "Omar Khan"
   ],
@@ -17,6 +17,9 @@
   ],
   "dependencies": {
     "angular": "~1.4.8",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "animate.css": "~3.4.0",
+    "angular-highlightjs": "~0.5.1",
+    "highlightjs": "~8.9.1"
   }
 }
