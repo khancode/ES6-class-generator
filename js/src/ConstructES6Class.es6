@@ -1,12 +1,17 @@
 class ConstructES6Class {
 
-    static create(name, variables, methods) {
+    static create(name, inheritance, parentName, variables, methods) {
 
         console.log('hai');
 
         // Class and constructor
-        var str = 'class ' + name + ' {\n' +
-                  '\tconstructor() {\n'; // TODO put in constructor paramters
+        var str = 'class ' + name + ' ';
+
+        if (inheritance != '') {
+            str += inheritance + ' ' + parentName;
+        }
+
+        str += ' {\n\tconstructor() {\n'; // TODO put in constructor paramters
 
         // declare variables
         for (var i in variables) {

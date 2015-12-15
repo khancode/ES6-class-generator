@@ -26,7 +26,7 @@
         <script src="js/dist/ConstructES6Class.js"></script>
     </head>
     <body>
-        <div ng-controller="mainController">
+        <div ng-controller="mainController" style="margin: 0 auto;width:85%">
             <!--<p>-->
                 <!--Hello, World! {{ bob = 2 + 4 | currency }}-->
             <!--</p>-->
@@ -35,46 +35,176 @@
             <!--<p ng-repeat="car in cars">{{ car.year }} {{ car.make }} {{ car.model }}<p>-->
 
             <div id="formContainer">
-                <div class="form-group">
-                    <label for="className" style="width:50px;">Class:</label>
-                    <input ng-model="className" type="text" style="display:inline; width:25%;" class="form-control" id="className" placeholder="Enter class name">
-                    <select class="form-control" style="display:inline; width:25%">
-                        <option ng-repeat="option in PARENT_OPTIONS" value="{{option}}">{{option}}</option>
-                    </select>
-                    <input type="text" style="display:inline; width:25%;" class="form-control" id="parentClassName" placeholder="Enter parent class name">
+                <!--<div class="componentContainer" style="padding:3%">-->
+                    <!--<div style="margin: 0 auto; width:80%">-->
+                        <!--<span id="classNameContainer" class="form-group {{classNameError ? 'has-error' : ''}}">-->
+                            <!--<label for="className" style="width:50px;">Class:</label>-->
+                            <!--<input ng-model="className" type="text" style="display:inline; width:25%;" class="form-control" id="className" placeholder="Enter class name">-->
+                        <!--</span>-->
+                        <!--<span id="inheritanceContainer" class="form-group">-->
+                            <!--<select ng-model="inheritance" class="form-control" style="display:inline; width:25%">-->
+                                <!--<option ng-repeat="option in PARENT_OPTIONS" value="{{option}}">{{option}}</option>-->
+                            <!--</select>-->
+                        <!--</span>-->
+                        <!--<span id="parentClassNameContainer" class="form-group">-->
+                            <!--<input ng-model="parentClassName" type="text" style="display:inline; width:25%;" class="form-control {{parentClassNameError ? 'has-error' : ''}}" id="parentClassName" placeholder="Enter parent class name">-->
+                        <!--</span>-->
+                        <!--<p id="errorNameComponent" ng-show="classComponentError" class="has-error">Dat obnoxious feel</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="componentContainer" style="padding-top:3%">-->
+                    <!--<div style="margin: 0 auto; width:78%">-->
+                        <!--<span id="variableNameContainer" class="form-group">-->
+                            <!--<label for="variableName">Variable:</label>-->
+                            <!--<input type="text" ng-model="varName" ng-keyup="$event.keyCode == 13 && addVariable()" style="display:inline; width:25%;" class="form-control" id="variableName" placeholder="Enter variable name">-->
+                        <!--</span>-->
+
+                        <!--<span ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">-->
+                            <!--<label>-->
+                                <!--<input ng-model="$parent.varAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.varAccessModifier=accessModifier) : ''" name="variableAccessModifiers"> {{accessModifier}}-->
+                            <!--</label>-->
+                        <!--</span>-->
+
+                        <!--<button ng-click="addVariable()" class="btn btn-info">Add</button>-->
+
+                        <!--<div id="varList" style="padding-top:2%; margin-top:1%">-->
+                            <!--<button ng-repeat="variable in variables" ng-click="removeVariable(variable)" class="btn btn-default">{{variable.accessModifier}} - {{variable.name}}</button>-->
+                        <!--</div>-->
+                        <!--<p ng-show="variableComponentError" class="has-error">Dat obnoxious feel</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="componentContainer" style="padding-top:3%">-->
+                    <!--<div style="margin: 0 auto; width:75%">-->
+                        <!--<span id="methodNameContainer" class="form-group">-->
+                            <!--<label for="methodName">Method:</label>-->
+                            <!--<input type="text" ng-model="methodName" ng-keyup="$event.keyCode == 13 && addMethod()" style="display:inline; width:25%;" class="form-control" id="methodName" placeholder="Enter method name">-->
+                        <!--</span>-->
+
+                        <!--<span ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">-->
+                            <!--<label>-->
+                                <!--<input ng-model="$parent.methodAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.methodAccessModifier=accessModifier) : ''" name="methodAccessModifiers"> {{accessModifier}}-->
+                            <!--</label>-->
+                        <!--</span>-->
+                        <!--<button ng-click="addMethod()" class="btn btn-info">Add</button>-->
+
+                        <!--<div id="methodList" style="padding-top:2%; margin-top:1%">-->
+                            <!--<button ng-repeat="method in methods" ng-click="removeMethod(method)" class="btn btn-default">{{method.accessModifier}} - {{method.name}}</button>-->
+                        <!--</div>-->
+                        <!--<p ng-show="methodComponentError" class="has-error">Dat obnoxious feel</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!-- *********************************************************************************************** -->
+
+                <!--<div class="form-group has-success has-feedback">-->
+                    <!--<label class="control-label" for="inputSuccess2">Input with success</label>-->
+                    <!--<input type="text" class="form-control" id="inputSuccess2" aria-describedby="inputSuccess2Status">-->
+                    <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+                    <!--<span id="inputSuccess2Status" class="sr-only">(success)</span>-->
+                <!--</div>-->
+
+
+                <div class = "panel panel-primary componentContainer">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">Class</h3>
+                    </div>
+
+                    <div class = "panel-body">
+
+                        <div id="classNameContainer" class="form-group {{classComponentError ? 'has-warning' : ''" style="width:50%; float:left">
+                            <div id="new_classNameLabelContainer"><label class="control-label" for="new_className">Name</label></div>
+                            <input id="new_className" type="text" ng-model="className" class="form-control" style="width:75%" placeholder="Enter class name"/>
+                            <label ng-show="false" class="control-label" for="new_className"><i>Please enter class name</i></label>
+                        </div>
+
+                        <div id="new_inheritanceContainer" style="width:50%; float:left">
+                            <!--<div id="new_inheritanceLabelContainer"><label for="new_inheritanceCheckbox">Inheritance</label></div>-->
+                            <!--<input id="new_inheritanceCheckbox" type="checkbox" style="float:left; margin-right: 3%"/>-->
+                            <div id="new_inheritanceLabelContainer">
+                                <input id="new_inheritanceCheckbox" ng-model="showParentNameInput" type="checkbox" style="float:left; margin-right: 3%"/>
+                                <label for="new_inheritanceCheckbox">Inheritance</label>
+                            </div>
+                            <input type="text" ng-show="showParentNameInput" class="form-control" style="width:75%; float:left" placeholder="Enter parent name"/>
+                        </div>
+
+                    </div>
+
                 </div>
-                <div class="form-group">
-                    <label for="variableName">Variable:</label>
-                    <input type="text" ng-model="varName" ng-keyup="$event.keyCode == 13 && addVariable()" style="display:inline; width:25%;" class="form-control" id="variableName" placeholder="Enter variable name">
-                    <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
-                        <label>
-                            <input ng-model="$parent.varAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.varAccessModifier=accessModifier) : ''" name="variableAccessModifiers"> {{accessModifier}}
-                        </label>
+
+                <div class = "panel panel-primary componentContainer" ng-show="className.length != 0">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">Variables</h3>
                     </div>
 
-                    <button ng-click="addVariable()" class="btn btn-info">Add</button>
+                    <div class = "panel-body">
 
-                    <div id="varList">
-                        <button ng-repeat="variable in variables" ng-click="removeVariable(variable)" class="btn btn-default">{{variable.accessModifier}} - {{variable.name}}</button>
+                        <div id="new_variableNameContainer" class="form-group has-warning" style="width:50%; float:left">
+                            <div id="new_variableNameLabelContainer"><label class="control-label" for="new_variableName">Name</label></div>
+                            <input id="new_variableName" type="text" ng-model="varName" ng-keyup="$event.keyCode == 13 && addVariable()" class="form-control" style="width:75%" placeholder="Enter variable name"/>
+                            <label ng-show="false" class="control-label" for="new_variableName"><i>Please enter variable name</i></label>
+                        </div>
+
+                        <div id="new_variableAccessModifier" style="width:37.5%; float:left">
+                            <div id="new_variableAccessModifierLabelContainer"><label class="control-label" for="new_variableAccessModifier">Access Modifier</label></div>
+
+                            <span ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
+                                <label>
+                                    <input ng-model="$parent.varAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.varAccessModifier=accessModifier) : ''" name="new_variableAccessModifiers"> {{accessModifier}}
+                                </label>
+                            </span>
+                        </div>
+
+                        <div id="new_addVariableButtonContainer" style="width:12.5%; float:left">
+                            <!-- inner div used for vertically centering button -->
+                            <div style="padding-top:25%; padding-bottom:25%;">
+                                <button ng-click="addVariable()" class="btn btn-info" style="width:100%">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer" ng-show="variables.length > 0">
+                        <button ng-repeat="variable in variables" ng-click="removeVariable(variable)" class="btn btn-default animated {{buttonAnimation}}">{{variable.accessModifier}} - {{variable.name}}</button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="methodName">Method:</label>
-                    <input type="text" ng-model="methodName" ng-keyup="$event.keyCode == 13 && addMethod()" style="display:inline; width:25%;" class="form-control" id="methodName" placeholder="Enter method name">
-                    <div ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
-                        <label>
-                            <input ng-model="$parent.methodAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.methodAccessModifier=accessModifier) : ''" name="methodAccessModifiers"> {{accessModifier}}
-                        </label>
+                <div class = "panel panel-primary componentContainer" ng-show="className.length != 0">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">Methods</h3>
                     </div>
-                    <button ng-click="addMethod()" class="btn btn-info">Add</button>
 
-                    <div id="methodList">
-                        <button ng-repeat="method in methods" ng-click="removeMethod(method)" class="btn btn-default">{{method.accessModifier}} - {{method.name}}</button>
+                    <div class = "panel-body">
+
+                        <div id="new_methodNameContainer" class="form-group has-warning" style="width:50%; float:left">
+                            <div id="new_methodNameLabelContainer"><label class="control-label" for="new_methodName">Name</label></div>
+                            <input id="new_methodName" type="text" ng-model="methodName" ng-keyup="$event.keyCode == 13 && addMethod()" class="form-control" style="width:75%" placeholder="Enter method name"/>
+                            <label ng-show="false" class="control-label" for="new_methodName"><i>Please enter method name</i></label>
+                        </div>
+
+                        <div id="new_methodAccessModifier" style="width:37.5%; float:left">
+                            <div id="new_methodAccessModifierLabelContainer"><label class="control-label" for="new_methodAccessModifier">Access Modifier</label></div>
+
+                            <span ng-repeat="accessModifier in ACCESS_MODIFIERS" class="radio-inline">
+                                <label>
+                                    <input ng-model="$parent.methodAccessModifier" type="radio" data-ng-value="accessModifier" ng-init="accessModifier==$parent.DEFAULT_ACCESS_MODIFIER ? ($parent.methodAccessModifier=accessModifier) : ''" name="new_methodAccessModifiers"> {{accessModifier}}
+                                </label>
+                            </span>
+                        </div>
+
+                        <div id="new_addMethodButtonContainer" style="width:12.5%; float:left">
+                            <!-- inner div used for vertically centering button -->
+                            <div style="padding-top:25%; padding-bottom:25%;">
+                                <button ng-click="addMethod()" class="btn btn-info" style="width:100%">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer" ng-show="methods.length > 0">
+                        <button ng-repeat="method in methods" ng-click="removeMethod(method)" class="btn btn-default animated {{buttonAnimation}}">{{method.accessModifier}} - {{method.name}}</button>
                     </div>
                 </div>
 
-                <button ng-click="constructES6Class()" class="btn btn-default">Submit</button>
+                <!--<button ng-click="constructES6Class()" class="btn btn-default">Create</button>-->
             </div>
 
             <!--<div id="resultContainer" hljs source="resultText" hljs-language="javascript">-->

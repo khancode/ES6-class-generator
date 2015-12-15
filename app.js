@@ -1,8 +1,41 @@
 var myApp = angular.module('myApp', ['hljs']);
 
-myApp.value('PARENT_OPTIONS', ['', 'extends', 'implements']);
+myApp.value('PARENT_OPTIONS', ['', 'extends']);
 myApp.value('ACCESS_MODIFIERS', {modifiers:['public', 'private'], default:'public'});
-myApp.value('TEXT_ANIMATION', 'flipInX');
+myApp.value('ANIMATION', {resultText:'flipInX', button:'bounceInRight'});
+myApp.value('INPUT_VALIDATION', [
+    {
+        groupId: 'classComponentError',
+        errors: [
+            {
+                id: 'classNameError',
+                requirements: ['!empty', 'no whitespace']
+            },
+            {
+                id: 'parentNameError',
+                requirements: ['!empty', 'no whitespace']
+            }
+        ]
+    },
+    {
+        groupId: 'variableComponentError',
+        errors: [
+            {
+                id: 'variableNameError',
+                requirements: ['!empty', 'no whitespace', 'no duplicate']
+            }
+        ]
+    },
+    {
+        groupId: 'methodComponentError',
+        errors: [
+            {
+                id: 'methodNameError',
+                requirements: ['!empty', 'no whitespace', 'no duplicate']
+            }
+        ]
+    }
+]);
 
 myApp.config(function (hljsServiceProvider) {
     hljsServiceProvider.setOptions({
@@ -11,21 +44,71 @@ myApp.config(function (hljsServiceProvider) {
     });
 });
 
-myApp.controller('mainController', ['$scope', '$timeout', 'PARENT_OPTIONS', 'ACCESS_MODIFIERS', 'TEXT_ANIMATION', function($scope, $timeout, PARENT_OPTIONS, ACCESS_MODIFIERS, TEXT_ANIMATION) {
+myApp.controller('mainController', ['$scope', '$timeout', 'PARENT_OPTIONS', 'ACCESS_MODIFIERS', 'ANIMATION', function($scope, $timeout, PARENT_OPTIONS, ACCESS_MODIFIERS, ANIMATION) {
 
     $scope.PARENT_OPTIONS = PARENT_OPTIONS;
     $scope.ACCESS_MODIFIERS = ACCESS_MODIFIERS.modifiers;
     $scope.DEFAULT_ACCESS_MODIFIER = ACCESS_MODIFIERS.default;
-    $scope.className = '';
+    $scope.buttonAnimation = ANIMATION.button;
+    $scope.className;
+    $scope.inheritance = '';
+    $scope.parentClassName = '';
+
     $scope.variables = [];
     $scope.varName = '';
     $scope.varAccessModifier = undefined; // this is automatically defined in html
+
     $scope.methods = [];
     $scope.methodName = '';
     $scope.methodAccessModifier = undefined; // this is automatically defined in html
+
     $scope.resultText = '';
 
+    $scope.showParentNameInput = undefined;
+
+    $scope.classComponentError = false;
+    $scope.classNameError = false;
+    $scope.parentClassNameError = false;
+
+    $scope.variableComponentError = false;
+    $scope.variableNameError = false;
+
+    $scope.methodComponentError = false;
+
+
+    $scope.$watch('className', function(newValue, oldValue) {
+
+
+        console.log('dat courageous feel');
+
+        if (newValue !== oldValue) {
+
+            if (newValue.length !== 0) {
+                console.log('good');
+
+                var es6ClassStr = ConstructES6Class.create($scope.className, $scope.inheritance, $scope.parentClassName, $scope.variables, $scope.methods);
+
+                console.log(es6ClassStr);
+
+                $scope.resultText = es6ClassStr;
+
+                console.log('dat showParentInput: ' + $scope.showParentNameInput);
+            }
+            else
+                $scope.resultText = '';
+        }
+    });
+
+    function validateClass() {
+
+        if ($scope.className.length === 0) {
+
+        }
+
+    }
+
     $scope.addVariable = function() {
+
         // Check if name already exists
         for (var i in $scope.variables) {
             if ($scope.varName == $scope.variables[i].name) {
@@ -33,6 +116,8 @@ myApp.controller('mainController', ['$scope', '$timeout', 'PARENT_OPTIONS', 'ACC
                 return;
             }
         }
+
+        validateVariableInput($scope.varName, $scope.variables);
 
         // Add new variable
         $scope.variables.push(new Variable($scope.varName, $scope.varAccessModifier));
@@ -68,6 +153,10 @@ myApp.controller('mainController', ['$scope', '$timeout', 'PARENT_OPTIONS', 'ACC
         // Add new variable
         $scope.methods.push(new Method($scope.methodName, $scope.methodAccessModifier));
 
+        // Reset fields
+        $scope.methodName = '';
+        $scope.methodAccessModifier = $scope.DEFAULT_ACCESS_MODIFIER;
+
         $scope.constructES6Class();
     };
 
@@ -85,19 +174,118 @@ myApp.controller('mainController', ['$scope', '$timeout', 'PARENT_OPTIONS', 'ACC
 
     $scope.constructES6Class = function() {
 
-        var es6ClassStr = ConstructES6Class.create($scope.className, $scope.variables, $scope.methods);
+        //// define requirements
+        //var requirements = {
+        //
+        //}
+        var validationResult = validateInput($scope.className, $scope.inheritance, $scope.parentClassName, $scope.variables, $scope.methods);
+
+        console.log(validationResult.classComponentError);
+
+        if (validationResult.classComponentError.length == 0)
+            console.log("classComponent good! :D");
+        else
+            console.log("classComponent bad! :(");
+
+        if (validationResult.variableComponentError.length == 0)
+            console.log("variableComponent good! :D");
+        else
+            console.log("variableComponent bad! :(");
+
+        if (validationResult.methodComponentError.length == 0)
+            console.log("methodComponent good! :D");
+        else
+            console.log("methodComponent bad! :(");
+
+        //var validation = inputValidation.validate($scope, $scope.className, $scope.inheritance, $scope.parentClassName, $scope.variables, $scope.methods);
+
+        //if (validation.error) {
+        //    alert('Error: ' + validation.message);
+        //    return;
+        //}
+
+        var es6ClassStr = ConstructES6Class.create($scope.className, $scope.inheritance, $scope.parentClassName, $scope.variables, $scope.methods);
 
         console.log(es6ClassStr);
 
         $scope.resultText = es6ClassStr;
 
         // Replay animation
-        $('#resultTextarea').addClass('animated ' + TEXT_ANIMATION);
+        $('#resultTextarea').addClass('animated ' + ANIMATION.resultText);
 
         $timeout(function() {
-            $('#resultTextarea').removeClass('animated ' + TEXT_ANIMATION);
+            $('#resultTextarea').removeClass('animated ' + ANIMATION.resultText);
         }, 1000);
     };
+
+    function validateClassNameInput(className, inheritance, parentName) {
+
+        var errorResult = [];
+
+        if (className.length === 0) {
+            errorResult.push({
+                component: 'classNameError',
+                message: 'enter class name'
+            });
+        }
+
+        if (inheritance === 'extends' && parentName.length === 0) {
+            errorResult.push({
+                component: 'parentNameError',
+                message: 'enter parent name'
+            });
+        }
+
+    }
+
+    function validateVariableInput(className, variable, variablesArr) {
+
+        //if (className.length === 0)
+
+    }
+
+    function validateInput(className, inheritance, parentClassName, variables, methods) {
+        console.log('inputValidation:');
+        console.log('className: ' + className);
+        console.log('inheritance: ' + inheritance);
+        console.log('parentClassName: ' + parentClassName);
+        console.log('variables: ' + variables);
+        console.log('methods: ' + methods);
+
+        var result = {
+            classComponentError: [],
+            variableComponentError: [],
+            methodComponentError: []
+        };
+
+        if (className.length === 0) {
+            //result.classComponentError.error = true;
+            //result.classComponentError.message = true;
+            //result.classNameError = true;
+
+            console.log('rawr! >:D');
+
+            result.classComponentError.push(
+                {
+                    component: 'classNameError',
+                    error: 'enter class name'
+                }
+            );
+        }
+
+        if (inheritance === 'extends' && parentClassName.length === 0) {
+            result.classComponentError.push(
+                {
+                    component: 'parentNameError',
+                    error: 'enter parent name'
+                }
+            );
+        }
+
+        if (variables)
+
+        return result;
+    }
 
 
 }]);
